@@ -23,6 +23,7 @@ end
 gem 'jquery-rails'
 gem 'cloudmade', "~> 0.2.0"
 gem 'leaflet-rails'
+gem 'leaflet-draw-rails'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

@@ -11,5 +11,6 @@
  *= require offices
  *= require_self
  *= require leaflet
+ *= require leaflet.draw
  *= require_tree .
  */
