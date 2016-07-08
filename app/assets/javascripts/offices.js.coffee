@@ -5,15 +5,17 @@
 $ = jQuery
 
 $ ->
-	# create map	
+	# create map
 	map = L.map('map').setView([
 	  48.856
 	  2.35
 	], 13)
 
-	# add tile layer
-	L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-	  attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
+	# add tile layer 
+	tileurl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+	tileattribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+	L.tileLayer(tileurl, 
+	  attribution: tileattribution
 	  maxZoom: 18).addTo map
 
 	# add office points
@@ -68,10 +70,11 @@ $ ->
 	    # Do marker specific actions
 	  else
 	  # Do whatever else you need to. (save to db, add to map etc)
-	  map.addLayer layer
+	  drawnItems.addLayer layer
 	  return
 
-	#drawnItems.editing.enable()
+	# enable editing of drawn items
+	drawnItems.editing.enable()
 
 	# react to editing
 	map.on 'draw:edited', (e) ->
