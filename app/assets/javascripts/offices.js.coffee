@@ -28,24 +28,8 @@ $ ->
 	  marker = L.marker([lat, lon]).addTo(map)
 	  marker.bindPopup("<b>#{name}</b><br>#{details}")
 
-	# draw testline
-	pointA = new (L.LatLng)(48.856, 2.35)
-	pointB = new (L.LatLng)(49, 3)
-	pointList = [
-	  pointA
-	  pointB
-	]
-	firstpolyline = new (L.Polyline)(pointList,
-	  color: 'red'
-	  weight: 3
-	  opacity: 0.5
-	  smoothFactor: 1)
-	  
-	firstpolyline.addTo(map);
-
-	# add drawing layers
+	# add drawing layer
 	drawnItems = new (L.FeatureGroup)
-
 
 	# add drawing controls
 	drawControl = new (L.Control.Draw)(
@@ -59,10 +43,10 @@ $ ->
 	    featureGroup: drawnItems)
 	map.addControl drawControl
 
-	# change colour
+	# change colour of drawn rectangles
 	drawControl.setDrawingOptions rectangle: shapeOptions: color: '#000000'
 
-	# react to user drawing
+	# react to user starting to draw
 	map.on 'draw:drawstart', (e) ->
 	  console.log("drawstart")
 	  if map.hasLayer drawnItems
@@ -78,9 +62,7 @@ $ ->
 	map.on 'draw:created', (e) ->
 	  console.log("created")
 	  layer = e.layer
-	  hunun = layer.getBounds()
-	  west = hunun.getEast()
-	  console.log(west)
+	  coturl(layer)
 	  drawnItems.addLayer layer
 	  return
 
@@ -89,7 +71,18 @@ $ ->
 	  console.log("edited")
 	  layers = e.layers
 	  layers.eachLayer (layer) ->
-	    #do whatever you want, most likely save back to db
+	    coturl(layer)
 	    return
+	  return
+
+	# coordinates to url
+	coturl = (layer) ->
+	  console.log("coturl")
+	  ll = layer.getBounds()
+	  north = ll.getNorth()
+	  east = ll.getEast()
+	  west = ll.getWest()
+	  south = ll.getSouth()
+	  console.log(north, east, west, south)
 	  return
 
