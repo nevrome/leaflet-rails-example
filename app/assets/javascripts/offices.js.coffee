@@ -45,13 +45,13 @@ $ ->
 
 	# add drawing layers
 	drawnItems = new (L.FeatureGroup)
-	map.addLayer drawnItems
+
 
 	# add drawing controls
 	drawControl = new (L.Control.Draw)(
 	  draw:
 	    polyline: false
-	    polygon: true 
+	    polygon: false 
 	    rectangle: true
 	    marker: false
 	    circle: false
@@ -61,23 +61,32 @@ $ ->
 
 	# change colour
 	drawControl.setDrawingOptions rectangle: shapeOptions: color: '#000000'
-	
+
+	# react to user drawing
+	map.on 'draw:drawstart', (e) ->
+	  console.log("drawstart")
+	  if map.hasLayer drawnItems
+	    console.log("if")
+	    drawnItems.eachLayer (layer) ->
+	      do drawnItems.removeLayer layer
+	    return
+	    #drawnItems.removeLayer
+	  map.addLayer drawnItems
+	  return
+
 	# react to user drawing
 	map.on 'draw:created', (e) ->
-	  type = e.layerType
+	  console.log("created")
 	  layer = e.layer
-	  if type == 'rectangle'
-	    # Do marker specific actions
-	  else
-	  # Do whatever else you need to. (save to db, add to map etc)
+	  hunun = layer.getBounds()
+	  west = hunun.getEast()
+	  console.log(west)
 	  drawnItems.addLayer layer
 	  return
 
-	# enable editing of drawn items
-	drawnItems.editing.enable()
-
 	# react to editing
 	map.on 'draw:edited', (e) ->
+	  console.log("edited")
 	  layers = e.layers
 	  layers.eachLayer (layer) ->
 	    #do whatever you want, most likely save back to db
